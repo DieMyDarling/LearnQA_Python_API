@@ -8,3 +8,4 @@ print(redirects)
 
 final_url = r.history[-1].url
 print(final_url)
+
