@@ -3,7 +3,7 @@ import requests
 
 url = 'https://playground.learnqa.ru/ajax/api/get_secret_password_homework'
 
-passwords = ['123456', '123456789', 'qwerty', 'password', '1234567', '12345678', '12345', 'iloveyou', '	111111',
+passwords = ['123456', '123456789', 'qwerty', 'password', '1234567', '12345678', '12345', 'iloveyou', '111111',
                  '123123', 'abc123', 'qwerty123', '1q2w3e4r', 'admin', 'qwertyuiop', '654321', '555555', 'lovely',
                  '7777777', 'welcome', '888888', 'princess', 'dragon', 'password1', '123qwe', '123456789', '12345',
              'qwerty', 'abc123', 'qwerty', '12345678', 'qwerty', '12345678', 'qwerty', '12345678', 'password',
@@ -29,19 +29,15 @@ passwords = ['123456', '123456789', 'qwerty', 'password', '1234567', '12345678',
              'michael', 'mustang', 'trustno1', 'batman', 'passw0rd', 'zaq1zaq1', 'qazwsx', 'password1', 'password1',
              'Football', 'password1', '000000', 'trustno1', 'starwars', 'password1', 'trustno1', 'qwerty123', '123qwe']
 
-for i in range(0, len(passwords)):
-
-    session = requests.post('https://playground.learnqa.ru/ajax/api/get_secret_password_homework', data={
-        'login': 'super_admin',
-        'password': passwords[i]}).cookies['auth_cookie']
-    print(f"Checking password: {passwords[i]}")
-    check_cookie = requests.get('https://playground.learnqa.ru/ajax/api/check_auth_cookie', cookies={'auth_cookie': session}).text
-
-if check_cookie == 'You are NOT authorized':
-    i = +1
-else:
-    assert check_cookie == 'You are authorized', 'Something goes wrong'
-    print(f"Valid password: {passwords[i]}")
-
-print('The dictionary does not contain the correct password')
+for password in passwords:
+    payloads = {"login": "super_admin", "password": password}
+    get_cookie = requests.post("https://playground.learnqa.ru/ajax/api/get_auth_cookie", data=payloads)
+    auth_cookie = get_cookie.cookies.get("auth_cookie")
+    cookies = {"auth_cookie": auth_cookie}
+    check_cookie = requests.get("https://playground.learnqa.ru/api/check_auth_cookie", cookies=cookies)
+    if check_cookie.text == "You are NOT authorized":
+        print(f'{password} is incorrect')
+    else:
+        print(f'{check_cookie.text}! The correct password is: {password}')
+        break
 
