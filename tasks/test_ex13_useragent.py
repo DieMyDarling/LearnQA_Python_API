@@ -1,6 +1,5 @@
-import requests
 import pytest
-
+import requests
 
 environments = [
     ({"user_agent": "Mozilla/5.0 (Linux; U; Android 4.0.2; en-us; Galaxy Nexus Build/ICL53F) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30",
@@ -27,4 +26,3 @@ def test_useragent(user_agent):
     assert expected_platform == actual_platform, f'Platform {actual_platform} is incorrect. Expected platform is {expected_platform}.'
     assert expected_browser == actual_browser, f'Browser {actual_browser} is incorrect. Expected browser is {expected_browser}.'
     assert expected_device == actual_device, f'Device {actual_device} is incorrect. Expected device is {expected_device}.'
-
